@@ -18,7 +18,7 @@ class ProviceTable extends Component {
     // console.log(data);
     return data ? (
       <div className="container mt-5 p-3 shadow rounded-lg border border-warning ">
-        <h3 >{data.pname}疫情数据</h3>
+        <h4 className="p-3 mx-auto">{data.pname}疫情数据</h4>
         <table className="table table-striped table-hover table-sm table-responsive-sm border">
           <thead className={textColor? textColor : "text-info"} style={{ fontWeight: "bold", fontSize: 20,  backgroundColor:  bg? bg : "#ffc107"}}>
             <tr>
@@ -42,7 +42,7 @@ class ProviceTable extends Component {
       </div>
     ) : (
       <div className="container mt-5 p-3 shadow rounded-lg border border-warning">
-        <h3>点击各省查看下辖县市</h3>
+        <h4 className="p-3 mx-auto">点击各省查看下辖县市</h4>
       </div>
     );
   }

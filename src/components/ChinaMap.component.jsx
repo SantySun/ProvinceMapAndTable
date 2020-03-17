@@ -7,13 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 am4core.useTheme(am4themes_animated);
 // const url = "http://192.168.20.6:4000/cov2020/api/";
 class ChinaMap extends Component {
-  constructor(props) {
-    super(props);
-    this.handleTooltipClick = this.handleTooltipClick.bind(this);
-  }
-  handleTooltipClick() {
-    alert("Clicked!!!");
-  }
+
   componentDidMount() {
     const province_name = {
       "CN-AH": "安徽",
@@ -126,18 +120,18 @@ class ChinaMap extends Component {
     heatLegend.orientation = "vertical";
     heatLegend.isMeasured = false;
     heatLegend.x = 10;
-    heatLegend.y = 40;
+    heatLegend.y = 50;
     // Set up custom heat map legend labels using axis ranges
     let minRange = heatLegend.valueAxis.axisRanges.create();
     minRange.value = heatLegend.minValue;
     let maxRange = heatLegend.valueAxis.axisRanges.create();
     maxRange.value = heatLegend.maxValue;
     // Blank out internal heat legend value axis labels
-    heatLegend.valueAxis.renderer.labels.template.adapter.add("text", function(
-    //   labelText
-    ) {
-      return "";
-    });
+    // heatLegend.valueAxis.renderer.labels.template.adapter.add("text", function(
+    // //   labelText
+    // ) {
+    //   return "";
+    // });
     // Configure series tooltip
     let polygonTemplate = polygonSeries.mapPolygons.template;
     polygonTemplate.tooltipText = `[bold]{pname}:[/]
@@ -226,8 +220,9 @@ class ChinaMap extends Component {
     chart.logo.height = -15;
     chart.seriesContainer.draggable = false;
     chart.seriesContainer.resizable = false;
-    chart.background.fill = '#000000'
-    chart.background.opacity = 1
+    let watermark = new am4core.Label();
+    watermark.text = "数据来源 © 2020 腾讯";
+    chart.children.push(watermark);
     this.chart = chart;
   }
 
@@ -240,8 +235,8 @@ class ChinaMap extends Component {
   render() {
     return (
       <div className="container shadow mt-5 rounded rounded-lg border border-warning">
-        <h3 className="p-3 mx-auto">全国各省市疫情地图</h3>
-        <div className="p-3 rounded rounded-lg mb-5 bg-light" id="chartdiv" style={{ width: "80%", height: "500px", margin: "auto" }}></div>
+        <h4 className="p-3 mx-auto" style={{margin: "auto"}}>全国各省市疫情地图</h4>
+        <div className="p-3 rounded rounded-lg mb-5 " id="chartdiv" style={{ width: "80%", height: "500px", margin: "auto", backgroundColor: "#d3d3d3"}}></div>
       </div>
     );
   }
