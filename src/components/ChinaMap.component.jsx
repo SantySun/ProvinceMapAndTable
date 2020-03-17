@@ -241,7 +241,7 @@ class ChinaMap extends Component {
     return (
       <div className="container shadow mt-5 rounded rounded-lg border border-warning">
         <h3 className="p-3 mx-auto">全国各省市疫情地图</h3>
-        <div className="p-3" id="chartdiv" style={{ width: "95%", height: "500px" }}></div>
+        <div className="p-3 rounded rounded-lg mb-5 bg-light" id="chartdiv" style={{ width: "80%", height: "500px", margin: "auto" }}></div>
       </div>
     );
   }

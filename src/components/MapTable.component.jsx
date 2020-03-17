@@ -12,7 +12,7 @@ class MapTable extends Component {
   }
 
   render() {
-    console.log(this.state.provinceData);
+    // console.log(this.state.provinceData);
     return (
       <div>
         <ChinaMap

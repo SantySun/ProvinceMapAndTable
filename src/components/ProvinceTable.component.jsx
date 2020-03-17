@@ -17,9 +17,9 @@ class ProviceTable extends Component {
     }
     // console.log(data);
     return data ? (
-      <div className="container mt-5 p-3 shadow rounded-lg border border-warning">
+      <div className="container mt-5 p-3 shadow rounded-lg border border-warning ">
         <h3 >{data.pname}疫情数据</h3>
-        <table className="table table-striped table-hover table-sm table-responsive-sm">
+        <table className="table table-striped table-hover table-sm table-responsive-sm border">
           <thead className={textColor? textColor : "text-info"} style={{ fontWeight: "bold", fontSize: 20,  backgroundColor:  bg? bg : "#ffc107"}}>
             <tr>
               <th>行政区</th>
