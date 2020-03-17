@@ -110,30 +110,34 @@ class ChinaMap extends Component {
       property: "fill",
       target: polygonSeries.mapPolygons.template,
       min: am4core.color("#FFFF00"),
-      max: am4core.color("#FF0000").lighten(-0.5)
+      max: am4core.color("#FF0000")
     });
     // Make map load polygon data (state shapes and names) from GeoJSON
     polygonSeries.useGeodata = true;
     // Set up heat legend
     let heatLegend = chart.createChild(am4maps.HeatLegend);
     heatLegend.series = polygonSeries;
-    heatLegend.align = "right";
-    heatLegend.width = am4core.percent(25);
-    heatLegend.marginRight = am4core.percent(4);
+    heatLegend.align = "left";
+    heatLegend.width = am4core.percent(40);
     heatLegend.minValue = 0;
-    heatLegend.maxValue = 80000;
+    heatLegend.maxValue = 2000;
     heatLegend.valign = "bottom";
+    heatLegend.markerCount = 5;
+    heatLegend.orientation = "vertical";
+    heatLegend.isMeasured = false;
+    heatLegend.x = 10;
+    heatLegend.y = 40;
     // Set up custom heat map legend labels using axis ranges
     let minRange = heatLegend.valueAxis.axisRanges.create();
     minRange.value = heatLegend.minValue;
     let maxRange = heatLegend.valueAxis.axisRanges.create();
     maxRange.value = heatLegend.maxValue;
     // Blank out internal heat legend value axis labels
-    // heatLegend.valueAxis.renderer.labels.template.adapter.add("text", function(
-    // //   labelText
-    // ) {
-    //   return "";
-    // });
+    heatLegend.valueAxis.renderer.labels.template.adapter.add("text", function(
+    //   labelText
+    ) {
+      return "";
+    });
     // Configure series tooltip
     let polygonTemplate = polygonSeries.mapPolygons.template;
     polygonTemplate.tooltipText = `[bold]{pname}:[/]
@@ -152,7 +156,7 @@ class ChinaMap extends Component {
 
     polygonTemplate.nonScalingStroke = true;
     polygonTemplate.strokeWidth = 0.5;
-    polygonTemplate.fill = am4core.color("#FFFF00");
+    // polygonTemplate.fill = am4core.color("#FFFF00");
     // polygonTemplate.tooltipPosition = "fixed";
     // polygonSeries.tooltip.label.interactionsEnabled = true;
     // polygonSeries.tooltip.keepTargetHover = true;
@@ -161,9 +165,10 @@ class ChinaMap extends Component {
     // hs.properties.fill = chart.colors.getIndex(1).brighten(-0.5);
     //new stuff
     let hs = polygonTemplate.states.create("hover");
-    hs.properties.fill = am4core.color("#FFC100");
+    hs.properties.fill = am4core.color("#dddddd");
+    // hs.properties.opacity = 0;
     polygonTemplate.adapter.add("fill", function(fill, target) {
-      if (target.dataItem.value > 50000) {
+      if (target.dataItem.value > 10000) {
         let pattern = new am4core.LinePattern();
         pattern.width = 1;
         pattern.height = 1;
@@ -171,7 +176,7 @@ class ChinaMap extends Component {
         pattern.strokeWidth = 2;
         pattern.rotation = 45;
         return pattern;
-      } else if (target.dataItem.value > 10000) {
+      } else if (target.dataItem.value > 1000) {
         let pattern = new am4core.LinePattern();
         pattern.width = 1;
         pattern.height = 1;
@@ -179,7 +184,7 @@ class ChinaMap extends Component {
         pattern.strokeWidth = 2;
         pattern.rotation = 45;
         return pattern;
-      } else if (target.dataItem.value > 1000) {
+      } else if (target.dataItem.value > 500) {
         let pattern = new am4core.LinePattern();
         pattern.width = 1;
         pattern.height = 1;
@@ -203,24 +208,26 @@ class ChinaMap extends Component {
         pattern.strokeWidth = 2;
         pattern.rotation = 45;
         return pattern;
+      } else if (target.dataItem.value > 0) {
+        return fill;
+      } else {
+        let pattern = new am4core.LinePattern();
+        pattern.width = 1;
+        pattern.height = 1;
+        pattern.stroke = am4core.color("#D3D3D3");
+        pattern.strokeWidth = 2;
+        pattern.rotation = 45;
+        return pattern;
       }
-      return fill;
     });
-    polygonTemplate.adapter.add("stroke", function(fill, target) {
-      if (target.dataItem.value > 10000) {
-        return am4core.color("#FF0000");
-      }
-      return fill;
-    });
+
     chart.maxZoomLevel = 1;
     chart.minZoomLevel = 1;
     chart.logo.height = -15;
     chart.seriesContainer.draggable = false;
-    // chart.seriesContainer.resizable = false;
-    chart.homeGeoPoint = {
-      latitude: 38.06,
-      longitude: 103.83
-    };
+    chart.seriesContainer.resizable = false;
+    chart.background.fill = '#000000'
+    chart.background.opacity = 1
     this.chart = chart;
   }
 
@@ -232,9 +239,9 @@ class ChinaMap extends Component {
 
   render() {
     return (
-      <div className="container shadow mt-5">
-        <h3>全国各省市疫情地图</h3>
-        <div id="chartdiv" style={{ width: "95%", height: "400px" }}></div>
+      <div className="container shadow mt-5 rounded rounded-lg border border-warning">
+        <h3 className="p-3 mx-auto">全国各省市疫情地图</h3>
+        <div className="p-3" id="chartdiv" style={{ width: "95%", height: "500px" }}></div>
       </div>
     );
   }
