@@ -7,7 +7,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 am4core.useTheme(am4themes_animated);
 // const url = "http://192.168.20.6:4000/cov2020/api/";
 class ChinaMap extends Component {
-
   componentDidMount() {
     const province_name = {
       "CN-AH": "安徽",
@@ -109,29 +108,31 @@ class ChinaMap extends Component {
     // Make map load polygon data (state shapes and names) from GeoJSON
     polygonSeries.useGeodata = true;
     // Set up heat legend
-    let heatLegend = chart.createChild(am4maps.HeatLegend);
-    heatLegend.series = polygonSeries;
-    heatLegend.align = "left";
-    heatLegend.width = am4core.percent(40);
-    heatLegend.minValue = 0;
-    heatLegend.maxValue = 2000;
-    heatLegend.valign = "bottom";
-    heatLegend.markerCount = 5;
-    heatLegend.orientation = "vertical";
-    heatLegend.isMeasured = false;
-    heatLegend.x = 10;
-    heatLegend.y = 50;
-    // Set up custom heat map legend labels using axis ranges
-    let minRange = heatLegend.valueAxis.axisRanges.create();
-    minRange.value = heatLegend.minValue;
-    let maxRange = heatLegend.valueAxis.axisRanges.create();
-    maxRange.value = heatLegend.maxValue;
-    // Blank out internal heat legend value axis labels
-    // heatLegend.valueAxis.renderer.labels.template.adapter.add("text", function(
-    // //   labelText
-    // ) {
-    //   return "";
-    // });
+    // let heatLegend = chart.createChild(am4maps.HeatLegend);
+    // heatLegend.series = polygonSeries;
+    // heatLegend.align = "left";
+    // heatLegend.width = am4core.percent(40);
+    // heatLegend.minValue = 0;
+    // heatLegend.maxValue = 2000;
+    // heatLegend.valign = "bottom";
+    // heatLegend.markerCount = 8;
+    // heatLegend.orientation = "vertical";
+    // heatLegend.isMeasured = false;
+    // heatLegend.x = 10;
+    // heatLegend.y = 50;
+    // // Set up custom heat map legend labels using axis ranges
+    // let minRange = heatLegend.valueAxis.axisRanges.create();
+    // minRange.value = heatLegend.minValue;
+    // let maxRange = heatLegend.valueAxis.axisRanges.create();
+    // maxRange.value = heatLegend.maxValue;
+    // // Blank out internal heat legend value axis labels
+    // heatLegend.valueAxis.renderer.labels.template.adapter.add(
+    //   "text",
+    //   function() //   labelText
+    //   {
+    //     return "";
+    //   }
+    // );
     // Configure series tooltip
     let polygonTemplate = polygonSeries.mapPolygons.template;
     polygonTemplate.tooltipText = `[bold]{pname}:[/]
@@ -214,9 +215,17 @@ class ChinaMap extends Component {
         return pattern;
       }
     });
-
+    // chart.homeGeoPoint = {
+    //   latitude: 34.5,
+    //   longitude: 108.8
+    // };
     chart.maxZoomLevel = 1;
-    chart.minZoomLevel = 1;
+    chart.events.on("ready", function(ev) {
+      // chart.zoomToMapObject(polygonSeries.mapPolygons["CN-SN"]);
+      chart.zoomToGeoPoint({ latitude: 34.5, longitude: 108.8 }, 0.9);
+    });
+    // chart.homeZoomLevel = 0.9;
+    chart.projection = new am4maps.projections.Miller();
     chart.logo.height = -15;
     chart.seriesContainer.draggable = false;
     chart.seriesContainer.resizable = false;
@@ -235,8 +244,19 @@ class ChinaMap extends Component {
   render() {
     return (
       <div className="container shadow mt-5 rounded rounded-lg border border-warning">
-        <h4 className="p-3 mx-auto" style={{margin: "auto"}}>全国各省市疫情地图</h4>
-        <div className="p-3 rounded rounded-lg mb-5 " id="chartdiv" style={{ width: "80%", height: "500px", margin: "auto", backgroundColor: "#d3d3d3"}}></div>
+        <h4 className="p-3 mx-auto" style={{ margin: "auto" }}>
+          全国各省市疫情地图
+        </h4>
+        <div
+          className="p-3 rounded rounded-lg mb-5 "
+          id="chartdiv"
+          style={{
+            width: "85%",
+            margin: "auto",
+            height: "500px",
+            backgroundColor: "#d3d3d3"
+          }}
+        ></div>
       </div>
     );
   }
